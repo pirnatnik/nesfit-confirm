@@ -1,0 +1,47 @@
+<!doctype html>
+<!--
+  The page Nesfit's confirmation email opens (#59). Published to GitHub Pages from the public repo
+  pirnatnik/nesfit-confirm (this app's repo is private, and Supabase serves HTML as plain text), at
+  https://pirnatnik.github.io/nesfit-confirm/. Run scripts/publish-confirm-page.sh after changing it.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Nesfit</title>
+    <style>
+      body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+        background: #f6f4ef; color: #15140f; font-family: -apple-system, system-ui, sans-serif; }
+      main { max-width: 360px; padding: 32px 24px; text-align: center; }
+      h1 { font-size: 30px; line-height: 1.15; margin: 0 0 12px; }
+      p { font-size: 17px; line-height: 1.5; margin: 0 0 28px; color: #4a4840; }
+      a.button { display: block; padding: 18px; border-radius: 999px; background: #c8f04a; color: #15140f;
+        font-size: 18px; font-weight: 700; text-decoration: none; }
+      .hidden { display: none; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="ok">
+        <h1>You’re confirmed</h1>
+        <p>Go back to Nesfit and keep talking to Mark. Everything you set up is still there.</p>
+      </div>
+      <div id="failed" class="hidden">
+        <h1>That link didn’t work</h1>
+        <p id="reason">It may have expired or been used already. Open Nesfit and send a new one from Account.</p>
+      </div>
+      <a class="button" href="nesfit://">Open Nesfit</a>
+    </main>
+    <script>
+      // Supabase adds the session (or an error) after the #. The app doesn't need it here, since it
+      // refreshes its own session, so drop it from the address bar and history.
+      var params = new URLSearchParams(location.hash.slice(1) || location.search.slice(1));
+      if (params.get('error')) {
+        document.getElementById('ok').className = 'hidden';
+        document.getElementById('failed').className = '';
+      }
+      if (location.hash || location.search) history.replaceState(null, '', location.pathname);
+    </script>
+  </body>
+</html>
